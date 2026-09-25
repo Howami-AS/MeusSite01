@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meus-sites-v1';
+const CACHE_NAME = 'meus-sites-v2';
 const ASSETS_TO_CACHE = [
   './index.html',
   './css/style.css',
@@ -13,6 +13,8 @@ const ASSETS_TO_CACHE = [
   './js/install.js',
   './js/webview.js',
   './manifest.json',
+  './assets/icons/icon-192.png',
+  './assets/icons/icon-512.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
 
