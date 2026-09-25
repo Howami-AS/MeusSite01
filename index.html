@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4f46e5">
+    <title>Meus Sites</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Ícones FontAwesome para UI limpa -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app-container">
+        <!-- Sidebar / Drawer para Desktop e Mobile -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fa-solid fa-globe"></i> Meus Sites</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-filter="all"><i class="fa-solid fa-house"></i> Todos os Sites</button>
+                <button class="nav-item" data-filter="favorites"><i class="fa-solid fa-star"></i> Favoritos</button>
+                <button class="nav-item" data-filter="recent"><i class="fa-solid fa-clock-rotate-left"></i> Recentes</button>
+                <div class="nav-divider"></div>
+                <div class="categories-header">
+                    <span>Categorias</span>
+                    <button id="btn-add-category" title="Nova Categoria"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div id="categories-list" class="categories-list">
+                    <!-- Categorias injetadas via JS -->
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="btn-settings" class="btn-settings"><i class="fa-solid fa-gear"></i> Configurações</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Principal -->
+            <header class="main-header">
+                <div class="header-title-group">
+                    <button id="btn-toggle-sidebar" class="icon-btn mobile-only"><i class="fa-solid fa-bars"></i></button>
+                    <div>
+                        <h1>Meus Sites</h1>
+                        <p class="subtitle">Todos os seus sites em um só lugar</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="input-search" placeholder="Pesquisar sites...">
+                    </div>
+                    <button id="btn-install" class="icon-btn hidden" title="Instalar Aplicativo"><i class="fa-solid fa-download"></i></button>
+                </div>
+            </header>
+
+            <!-- Seção de Acesso Rápido -->
+            <section id="quick-access-section" class="quick-access-section">
+                <h2><i class="fa-solid fa-bolt"></i> Acesso Rápido</h2>
+                <div id="quick-access-grid" class="quick-access-grid">
+                    <!-- Preenchido via JS -->
+                </div>
+            </section>
+
+            <!-- Grade Principal de Sites -->
+            <section class="sites-section">
+                <div class="section-header">
+                    <h2 id="current-view-title">Todos os Sites</h2>
+                    <div class="sort-dropdown-container">
+                        <select id="select-sort">
+                            <option value="custom">Ordem personalizada</option>
+                            <option value="name-asc">Nome (A-Z)</option>
+                            <option value="name-desc">Nome (Z-A)</option>
+                            <option value="most-used">Mais usados</option>
+                            <option value="recent">Adicionados recentemente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Estado Vazio -->
+                <div id="empty-state" class="empty-state hidden">
+                    <i class="fa-solid fa-globe empty-icon"></i>
+                    <h3>Nenhum site cadastrado</h3>
+                    <p>Adicione seus sites favoritos para acessá-los rapidamente.</p>
+                    <button id="btn-empty-add" class="btn-primary"><i class="fa-solid fa-plus"></i> Adicionar site</button>
+                </div>
+
+                <!-- Grid de Cartões -->
+                <div id="sites-grid" class="sites-grid">
+                    <!-- Cartões injetados via JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Botão Flutuante (FAB) para Adicionar -->
+    <button id="fab-add" class="fab" title="Adicionar Site"><i class="fa-solid fa-plus"></i></button>
+
+    <!-- Modal de Adicionar/Editar Site -->
+    <div id="modal-site" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-site-title">Adicionar Novo Site</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="form-site">
+                <input type="hidden" id="site-id">
+                <div class="form-group">
+                    <label for="site-name">Nome do site</label>
+                    <input type="text" id="site-name" placeholder="Ex: YouTube" required>
+                </div>
+                <div class="form-group">
+                    <label for="site-url">URL</label>
+                    <input type="text" id="site-url" placeholder="Ex: https://www.youtube.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="site-category">Categoria</label>
+                    <select id="site-category" required>
+                        <!-- Preenchido via JS -->
+                    </select>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="site-favorite"> ⭐ Adicionar aos favoritos
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary close-modal">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Configurações -->
+    <div id="modal-settings" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Configurações</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="settings-body">
+                <div class="settings-group">
+                    <h4>Aparência</h4>
+                    <div class="settings-options">
+                        <label><input type="radio" name="theme" value="light"> Claro</label>
+                        <label><input type="radio" name="theme" value="dark"> Escuro</label>
+                        <label><input type="radio" name="theme" value="auto" checked> Usar configuração do dispositivo</label>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h4>Dados e Backup</h4>
+                    <button id="btn-export" class="btn-outline"><i class="fa-solid fa-file-arrow-down"></i> Exportar Backup (JSON)</button>
+                    <button id="btn-import" class="btn-outline"><i class="fa-solid fa-file-arrow-up"></i> Importar Backup</button>
+                    <input type="file" id="file-import-input" accept=".json" class="hidden">
+                </div>
+                <div class="settings-group">
+                    <h4>Histórico</h4>
+                    <button id="btn-clear-recent" class="btn-outline"><i class="fa-solid fa-trash-can"></i> Limpar Recentes</button>
+                </div>
+                <div class="settings-group">
+                    <h4>Sobre</h4>
+                    <p class="about-title"><strong>Meus Sites</strong></p>
+                    <p>Versão: 1.0.0</p>
+                    <p class="about-desc">"Um gerenciador pessoal de sites desenvolvido como PWA."</p>
+                    <p class="footer-sign">©️ Alisson Salvador 2026</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizador Emulado (WebView / Navegador Interno) -->
+    <div id="webview-overlay" class="webview-overlay hidden">
+        <header class="webview-header">
+            <div class="webview-nav-controls">
+                <button id="wv-back" title="Voltar"><i class="fa-solid fa-arrow-left"></i></button>
+                <button id="wv-forward" title="Avançar"><i class="fa-solid fa-arrow-right"></i></button>
+                <button id="wv-reload" title="Recarregar"><i class="fa-solid fa-rotate-right"></i></button>
+            </div>
+            <div id="wv-url-display" class="webview-url">carregando...</div>
+            <div class="webview-actions">
+                <button id="wv-external" title="Abrir no navegador"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                <button id="wv-share" title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button>
+                <button id="wv-close" title="Fechar visualizador"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </header>
+        <div class="webview-body">
+            <div id="wv-block-warning" class="wv-block-warning hidden">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p>Este site não permite ser aberto diretamente dentro do aplicativo devido a restrições de segurança do próprio site.</p>
+                <button id="wv-btn-external" class="btn-primary"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir no navegador</button>
+            </div>
+            <iframe id="wv-iframe" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- Tela de Apresentação / Onboarding -->
+    <div id="modal-welcome" class="modal modal-onboarding hidden">
+        <div class="modal-content onboarding-content">
+            <div class="onboarding-slide active">
+                <i class="fa-solid fa-globe onboarding-icon"></i>
+                <h2>Bem-vindo ao Meus Sites</h2>
+                <p>"Tenha todos os seus sites em um único aplicativo e mantenha sua tela inicial organizada."</p>
+                <button id="btn-onboarding-next" class="btn-primary">Começar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Modulares -->
+    <script src="js/database.js"></script>
+    <script src="js/categories.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/sites.js"></script>
+    <script src="js/backup.js"></script>
+    <script src="js/install.js"></script>
+    <script src="js/webview.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
